@@ -23,11 +23,8 @@ void printMainMenu()
 
 void runCorrector()
 {
-  std::cout << "Insert filename:\n\tEx.: dump-file.txt\n\n";
-  std::string line;
-  std::getline(std::cin, line);
-
-  std::string resourcePath(".\\resource\\" + line);
+  float clockTime = getClockTime();
+  std::string resourcePath = getResourcePath();
   DataHazardCorrector* corrector = DataHazardCorrectorFactory::CreateCorrector(resourcePath);
   corrector->Correct();
 
@@ -36,6 +33,34 @@ void runCorrector()
   delete corrector;
   _getch();
 }
+
+float getClockTime()
+{
+  double clockTime;
+
+  std::cout << "Insert pipeline's clock time (GHz): ";
+  std::cin >> clockTime;
+
+  if (std::cin.fail()) {
+    std::cerr << "Invalid value, please enter a valid value again." << std::endl;
+    system("cls");
+    return getClockTime();
+  }
+
+  std::cout << "Clock time configured for: " << clockTime << " GHz" << std::endl;
+
+  return clockTime;
+}
+
+std::string getResourcePath()
+{
+  std::cout << "Insert filename:\n\tEx.: dump-file.txt\n\n";
+  std::string line;
+  std::getline(std::cin, line);
+  std::string resourcePath(".\\resource\\" + line);
+
+  return resourcePath;
+}  
 
 void printHelp()
 {
