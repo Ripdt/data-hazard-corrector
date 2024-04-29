@@ -71,7 +71,7 @@ void runCorrector()
   DataHazardCorrector* corrector = DataHazardCorrectorFactory::CreateCorrector(resourcePath);
   corrector->Correct();
 
-  std::cout << "\nCorrected file can be found in " << corrector->CorrectedPath();
+  std::cout << "\nCorrected file can be found in " << corrector->CorrectedPath() << "\n";
   printPerformanceMetrics(corrector, clockTime);
 
   delete corrector;

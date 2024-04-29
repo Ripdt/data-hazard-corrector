@@ -79,11 +79,14 @@ void DataHazardCorrector::ResolveDataHazards()
 }
 
 double DataHazardCorrector::CalculatePerformanceOverhead() const {
-    return 100.0 * (correctedInstructions.size() - instructions.size()) / instructions.size();
+  if (instructions.empty()) {
+    return 0;
+  }
+  return 100.0 * (correctedInstructions.size() - instructions.size()) / instructions.size();
 }
 
 double DataHazardCorrector::CalculateExecutionTime(double clockTime) const {
-    return correctedInstructions.size() * clockTime;
+  return correctedInstructions.size() * clockTime;
 }
 
 void DataHazardCorrector::WriteCorrectedFile() const
