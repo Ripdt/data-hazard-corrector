@@ -21,8 +21,7 @@ DataHazardCorrector::~DataHazardCorrector()
   correctedInstructions.clear();
   instructions.clear();
 }
-#include <iostream>
-#include <string>
+
 std::string DataHazardCorrector::GenerateCorrectedPath(
   const std::string _hazardPath
 ) const
