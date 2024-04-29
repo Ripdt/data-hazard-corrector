@@ -12,7 +12,7 @@ void printMainMenu()
   std::cout << "**                                                                          **\n";
   std::cout << "**  DATA HAZARD CORRECTOR                                                   **\n";
   std::cout << "**                                                                          **\n";
-  std::cout << "**                                                    BY FILIPI             **\n";
+  std::cout << "**                       BY FELIPE LUZ, FILIPI DA COSTA & JOÃO P PRUDÊNCIO  **\n";
   std::cout << "******************************************************************************\n";
   std::cout << "\n\n";
   std::cout << "MAIN MENU:\n\n";

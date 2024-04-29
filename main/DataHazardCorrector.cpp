@@ -21,7 +21,8 @@ DataHazardCorrector::~DataHazardCorrector()
   correctedInstructions.clear();
   instructions.clear();
 }
-
+#include <iostream>
+#include <string>
 std::string DataHazardCorrector::GenerateCorrectedPath(
   const std::string _hazardPath
 ) const
@@ -29,9 +30,9 @@ std::string DataHazardCorrector::GenerateCorrectedPath(
   std::filesystem::path path(_hazardPath);
   path.replace_filename(
     path
-      .filename()
+      .stem()
       .string()
-      .append("_corrected")
+      .append("_corrected.txt")
   );
   std::filesystem::remove(path);
   return path.string();
