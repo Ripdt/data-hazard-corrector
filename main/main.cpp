@@ -1,9 +1,7 @@
 #include <iostream>
-
+#include <conio.h>
 #include "DataHazardCorrector.h"
 #include "DataHazardCorrectorFactory.h"
-
-#include <conio.h>
 
 void printMainMenu()
 {
@@ -21,17 +19,60 @@ void printMainMenu()
   std::cout << "3 - Quit\n";
 }
 
-void runCorrector()
+void printPerformanceMetrics(DataHazardCorrector* corrector, double clockTime)
+{
+    if (corrector == nullptr) {
+        std::cerr << "Error: Data hazard corrector is not initialized." << std::endl;
+        return;
+    }
+
+    // Display performance metrics
+    std::cout << "Original Instructions: " << corrector->OriginalInstructionCount() << "\n";
+    std::cout << "Corrected Instructions: " << corrector->CorrectedInstructionCount() << "\n";
+    std::cout << "Performance Overhead: " << corrector->CalculatePerformanceOverhead() << "%\n";
+    std::cout << "New Estimated Execution Time: " << corrector->CalculateExecutionTime(clockTime) << " ns\n";
+}
+
+
+float getClockTime()
+{
+    double clockTime = 0;
+
+    std::cout << "Insert pipeline's clock time (ns): ";
+    std::cin >> clockTime;
+
+    if (std::cin.fail()) {
+        std::cin.clear(); // Clear error state
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore incorrect input until the end of the line
+        std::cerr << "Invalid value, please enter a valid numeric value." << std::endl;
+        system("cls"); // Clear the screen
+        return getClockTime(); // Recursively call getClockTime
+    }
+
+    std::cout << "Clock time configured for: " << clockTime << " ns" << std::endl;
+    return clockTime;
+}
+
+std::string getResourcePath()
 {
   std::cout << "Insert filename:\n\tEx.: dump-file.txt\n\n";
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore any leftover characters in the buffer
   std::string line;
   std::getline(std::cin, line);
+  std::string resourcePath(".\\resource\\" + line); //"C:\Users\felip\data-hazard-corrector\main\resource\instructions.txt"
 
-  std::string resourcePath(".\\resource\\" + line);
+  return resourcePath;
+}
+
+void runCorrector()
+{
+  float clockTime = getClockTime();
+  std::string resourcePath = getResourcePath();
   DataHazardCorrector* corrector = DataHazardCorrectorFactory::CreateCorrector(resourcePath);
   corrector->Correct();
 
   std::cout << "\nCorrected file can be found in " << corrector->CorrectedPath();
+  printPerformanceMetrics(corrector, clockTime);
 
   delete corrector;
   _getch();
