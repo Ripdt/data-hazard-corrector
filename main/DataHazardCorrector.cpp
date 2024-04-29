@@ -78,6 +78,14 @@ void DataHazardCorrector::ResolveDataHazards()
   }
 }
 
+double DataHazardCorrector::CalculatePerformanceOverhead() const {
+    return 100.0 * (correctedInstructions.size() - instructions.size()) / instructions.size();
+}
+
+double DataHazardCorrector::CalculateExecutionTime(double clockTime) const {
+    return correctedInstructions.size() * clockTime;
+}
+
 void DataHazardCorrector::WriteCorrectedFile() const
 {
   std::ofstream corrected(correctedPath);
