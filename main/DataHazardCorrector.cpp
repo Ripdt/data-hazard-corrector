@@ -61,41 +61,50 @@ void DataHazardCorrector::ResolveDataHazards()
 {
   std::vector<std::string> registers;
   std::string lastDestiny;
-  int i = 0;
   for (Instruction* instruction : instructions) {
+    if (lastDestiny.empty()) continue;
+
     const std::string firstRegister = instruction->FirstRegister();
-    const bool firstIsConflicted = !lastDestiny.empty() && firstRegister.compare(lastDestiny) == 0;
+    const bool firstIsConflicted = firstRegister.compare(lastDestiny) == 0;
 
     const std::string secondRegister = instruction->SecondRegister();
-    const bool secondIsConflicted = !lastDestiny.empty() && secondRegister.compare(lastDestiny) == 0;
+    const bool secondIsConflicted = secondRegister.compare(lastDestiny) == 0;
 
-    if (firstIsConflicted || secondIsConflicted) {
-      Instruction* nop = CreateInstruction(NoOperationInstruction());
-      correctedInstructions.push_back(nop);
+    if (firstIsConflicted) {
+        Instruction* nop = CreateInstruction(NoOperationInstruction());
+        correctedInstructions.push_back(nop);
+    }
+
+    if (secondIsConflicted) {
+        Instruction* nop = CreateInstruction(NoOperationInstruction());
+        correctedInstructions.push_back(nop);
     }
     correctedInstructions.push_back(instruction);
+
     lastDestiny = instruction->DestinyRegister();
   }
 }
 
-double DataHazardCorrector::CalculatePerformanceOverhead() const {
-  if (instructions.empty()) {
-    return 0;
-  }
+double DataHazardCorrector::CalculatePerformanceOverhead() const 
+{
+  if (instructions.empty()) return 0;
   return 100.0 * (correctedInstructions.size() - instructions.size()) / instructions.size();
 }
 
-double DataHazardCorrector::CalculateExecutionTime(double clockTime) const {
+double DataHazardCorrector::CalculateExecutionTime(
+    const double clockTime
+) const 
+{
   return correctedInstructions.size() * clockTime;
 }
 
 void DataHazardCorrector::WriteCorrectedFile() const
 {
-  std::ofstream corrected(correctedPath);
-  if (corrected.is_open())
+  std::ofstream correctedFile(correctedPath);
+  if (correctedFile.is_open())
     for (const Instruction* instruction : correctedInstructions)
-      corrected << instruction->ToString() << std::endl;
-  corrected.close();
+        correctedFile << instruction->ToString() << std::endl;
+  correctedFile.close();
 }
 
 std::string DataHazardCorrector::CorrectedPath() const
