@@ -62,24 +62,26 @@ void DataHazardCorrector::ResolveDataHazards()
   std::vector<std::string> registers;
   std::string lastDestiny;
   for (Instruction* instruction : instructions) {
-    if (lastDestiny.empty()) continue;
-
     const std::string firstRegister = instruction->FirstRegister();
-    const bool firstIsConflicted = firstRegister.compare(lastDestiny) == 0;
-
     const std::string secondRegister = instruction->SecondRegister();
-    const bool secondIsConflicted = secondRegister.compare(lastDestiny) == 0;
 
-    if (firstIsConflicted) {
+    const bool firstIsConflicted = !lastDestiny.empty() && firstRegister.compare(lastDestiny) == 0;
+    const bool secondIsConflicted = !lastDestiny.empty() && secondRegister.compare(lastDestiny) == 0;
+
+    if (firstIsConflicted && secondIsConflicted) {
         Instruction* nop = CreateInstruction(NoOperationInstruction());
         correctedInstructions.push_back(nop);
-    }
-
-    if (secondIsConflicted) {
-        Instruction* nop = CreateInstruction(NoOperationInstruction());
+        correctedInstructions.push_back(instruction);
         correctedInstructions.push_back(nop);
     }
-    correctedInstructions.push_back(instruction);
+    else if (firstIsConflicted || secondIsConflicted) {
+        Instruction* nop = CreateInstruction(NoOperationInstruction());
+        correctedInstructions.push_back(nop);
+        correctedInstructions.push_back(instruction);
+    }
+    else {
+        correctedInstructions.push_back(instruction);
+    }
 
     lastDestiny = instruction->DestinyRegister();
   }
