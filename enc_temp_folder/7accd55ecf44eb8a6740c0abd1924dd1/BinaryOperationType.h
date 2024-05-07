@@ -12,6 +12,7 @@
 class BinaryOperationType {
 public:
   enum {
+
     U_LUI_TYPE   = 0b00110111,
     U_AUIPC_TYPE = 0b00010111,
 

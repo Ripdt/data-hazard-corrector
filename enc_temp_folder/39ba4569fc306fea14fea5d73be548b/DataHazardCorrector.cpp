@@ -73,6 +73,14 @@ void DataHazardCorrector::ResolveDataHazards()
       InsertFixedInstructions();
     }
     correctedInstructions.push_back(instruction);
+    //else if (firstIsConflicted || secondIsConflicted) {
+    //    Instruction* nop = CreateInstruction(NoOperationInstruction());
+    //    correctedInstructions.push_back(nop);
+    //    correctedInstructions.push_back(instruction);
+    //}
+    //else {
+    //    correctedInstructions.push_back(instruction);
+    //}
 
     lastDestiny = instruction->DestinyRegister();
   }

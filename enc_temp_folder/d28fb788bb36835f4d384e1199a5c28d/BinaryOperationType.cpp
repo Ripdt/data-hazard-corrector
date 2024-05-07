@@ -31,6 +31,8 @@ int BinaryOperationType::ConvertString(
 size_t BinaryOperationType::FirstRegisterLength() const
 {
   switch (value) {
+    case U_LUI_TYPE:
+    case U_AUIPC_TYPE:
     case J_JALR_TYPE:
     case I_TYPE:
     case I2_TYPE:
@@ -40,8 +42,6 @@ size_t BinaryOperationType::FirstRegisterLength() const
     case S_TYPE:
     case R_TYPE:
       return 5;
-    case U_LUI_TYPE:
-    case U_AUIPC_TYPE:
     case J_JAL_TYPE:
     case NOP:
     default:

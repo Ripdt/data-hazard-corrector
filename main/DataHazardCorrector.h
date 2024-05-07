@@ -32,6 +32,8 @@ private:
         const std::string _hazardPath
     ) const;
 
+    void InsertFixedInstructions();
+
     void GetInstructionsFromHazardFile();
 
     virtual Instruction* CreateInstruction(
