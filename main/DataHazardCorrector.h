@@ -40,7 +40,7 @@ private:
         const std::string& instruction
     ) const = 0;
 
-    void ResolveDataHazards();
+    virtual void ResolveDataHazards() = 0;
 
     virtual std::string NoOperationInstruction() const = 0;
 

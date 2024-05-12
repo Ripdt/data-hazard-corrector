@@ -128,23 +128,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyDataHazardCorrector.cpp" />
-    <ClCompile Include="BinaryDataHazardCorrector.cpp" />
+    <ClCompile Include="NOPInsertionDataHazardCorrector.cpp" />
     <ClCompile Include="BinaryInstruction.cpp" />
     <ClCompile Include="DataHazardCorrector.cpp" />
     <ClCompile Include="DataHazardCorrectorFactory.cpp" />
-    <ClCompile Include="HexadecimalDataHazardCorrector.cpp" />
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BinaryOperationType.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssemblyDataHazardCorrector.h" />
-    <ClInclude Include="BinaryDataHazardCorrector.h" />
+    <ClInclude Include="NOPInsertionDataHazardCorrector.h" />
     <ClInclude Include="BinaryInstruction.h" />
     <ClInclude Include="DataHazardCorrector.h" />
     <ClInclude Include="DataHazardCorrectorFactory.h" />
-    <ClInclude Include="HexadecimalDataHazardCorrector.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="BinaryOperationType.h" />
   </ItemGroup>

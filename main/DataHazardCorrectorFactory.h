@@ -13,17 +13,6 @@ public:
   );
 
 private:
-  static bool IsBinary(
-    const std::string& hazardPath
-  );
-
-  static bool IsHexadecimal(
-    const std::string& hazardPath
-  );
-
-  static bool IsAssembly(
-    const std::string& hazardPath
-  );
 
   DataHazardCorrectorFactory() = default;
 };

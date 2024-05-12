@@ -57,34 +57,13 @@ void DataHazardCorrector::GetInstructionsFromHazardFile()
   rom.close();
 }
 
-void DataHazardCorrector::ResolveDataHazards()
+void DataHazardCorrector::WriteCorrectedFile() const
 {
-  std::vector<std::string> registers;
-  std::string lastDestiny;
-  for (Instruction* instruction : instructions) {
-    const std::string firstRegister = instruction->FirstRegister();
-    const std::string secondRegister = instruction->SecondRegister();
-
-    const bool lastInstructionHadADestiny = lastDestiny != "";
-    const bool firstIsConflicted = lastInstructionHadADestiny && firstRegister == lastDestiny;
-    const bool secondIsConflicted = lastInstructionHadADestiny && secondRegister == lastDestiny;
-
-    if (firstIsConflicted || secondIsConflicted) {
-      InsertFixedInstructions();
-    }
-    correctedInstructions.push_back(instruction);
-
-    lastDestiny = instruction->DestinyRegister();
-  }
-}
-
-void DataHazardCorrector::InsertFixedInstructions()
-{
-  Instruction* nop1 = CreateInstruction(NoOperationInstruction());
-  Instruction* nop2 = CreateInstruction(NoOperationInstruction());
-
-  correctedInstructions.push_back(nop1);
-  correctedInstructions.push_back(nop2);
+  std::ofstream correctedFile(correctedPath);
+  if (correctedFile.is_open())
+    for (const Instruction* instruction : correctedInstructions)
+      correctedFile << instruction->ToString() << std::endl;
+  correctedFile.close();
 }
 
 double DataHazardCorrector::CalculatePerformanceOverhead() const 
@@ -98,15 +77,6 @@ double DataHazardCorrector::CalculateExecutionTime(
 ) const 
 {
   return correctedInstructions.size() * clockTime;
-}
-
-void DataHazardCorrector::WriteCorrectedFile() const
-{
-  std::ofstream correctedFile(correctedPath);
-  if (correctedFile.is_open())
-    for (const Instruction* instruction : correctedInstructions)
-        correctedFile << instruction->ToString() << std::endl;
-  correctedFile.close();
 }
 
 std::string DataHazardCorrector::CorrectedPath() const

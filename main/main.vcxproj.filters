@@ -24,13 +24,7 @@
     <ClCompile Include="DataHazardCorrectorFactory.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="HexadecimalDataHazardCorrector.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="AssemblyDataHazardCorrector.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="BinaryDataHazardCorrector.cpp">
+    <ClCompile Include="NOPInsertionDataHazardCorrector.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="BinaryInstruction.cpp">
@@ -50,13 +44,7 @@
     <ClInclude Include="DataHazardCorrectorFactory.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="HexadecimalDataHazardCorrector.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="AssemblyDataHazardCorrector.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="BinaryDataHazardCorrector.h">
+    <ClInclude Include="NOPInsertionDataHazardCorrector.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="BinaryInstruction.h">

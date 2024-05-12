@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+
 #include "DataHazardCorrector.h"
 #include "DataHazardCorrectorFactory.h"
 
