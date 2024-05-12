@@ -400,3 +400,5 @@ FodyWeavers.xsd
 # Resource path
 
 main/resource/
+
+enc_temp_folder/
