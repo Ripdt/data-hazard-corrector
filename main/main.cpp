@@ -65,11 +65,34 @@ std::string getResourcePath()
   return resourcePath;
 }
 
+int getTypeOfCorrector()
+{
+  std::cout << "Insert which option of Data Hazard Corrector you want:\n";
+  std::cout << "1 - No Hardware Solutions for Conflicts (NOPs Only)\n";
+  std::cout << "2 - Forwarding Implemented (Use NOPs as Needed)\n";
+  std::cout << "3 - No Hardware Solutions for Conflicts (Reorder and NOPs)\n";
+  std::cout << "4 - Forwarding Implemented (Reorder and NOPs)\n";
+
+  int typeOfCorrector;
+  std::cin >> typeOfCorrector;
+
+  if (std::cin.fail() || typeOfCorrector < 1 || typeOfCorrector > 4) {
+    std::cin.clear(); // Clear error state
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore incorrect input until the end of the line
+    std::cerr << "Invalid value, please enter a valid option." << std::endl;
+    system("cls"); // Clear the screen
+    return getTypeOfCorrector();
+  }
+
+  return typeOfCorrector;
+}
+
 void runCorrector()
 {
-  float clockTime = getClockTime();
-  std::string resourcePath = getResourcePath();
-  DataHazardCorrector* corrector = DataHazardCorrectorFactory::CreateCorrector(resourcePath);
+  const float clockTime = getClockTime();
+  const std::string resourcePath = getResourcePath();
+  const int type = getTypeOfCorrector();
+  DataHazardCorrector* corrector = DataHazardCorrectorFactory::CreateCorrector(type, resourcePath);
   corrector->Correct();
 
   std::cout << "\nCorrected file can be found in " << corrector->CorrectedPath() << "\n";

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "BinaryOperationType.h"
+
 class Instruction
 {
 public:
@@ -12,11 +14,20 @@ public:
 
   std::string ToString() const;
 
-  virtual std::string DestinyRegister() const = 0;
+  std::string DestinyRegister() const;
 
-  virtual std::string FirstRegister() const = 0;
+  std::string FirstRegister() const;
 
-  virtual std::string SecondRegister() const = 0;
+  std::string SecondRegister() const;
+
+  const BinaryOperationType& Type() const;
+
+private:
+  BinaryOperationType ConvertOpCodeFromInstructionToOperationType(
+    const std::string& _instruction
+  ) const;
+
+  const BinaryOperationType type;
 
 protected:
   const std::string instruction;

@@ -10,13 +10,14 @@ public:
     const std::string hazardPath
   );
 
-private:
-  void ResolveDataHazards() override;
-
-  bool HasConflictWithInstructions(
+protected:
+  virtual bool HasConflictWithInstructions(
     Instruction* previousInstruction,
     Instruction* followingInstruction
   ) const;
+
+private:
+  void ResolveDataHazards() override;
 
   void InsertFixedInstruction();
 

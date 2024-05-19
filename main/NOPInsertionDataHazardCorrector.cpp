@@ -1,6 +1,6 @@
 #include "NOPInsertionDataHazardCorrector.h"
 
-#include "BinaryInstruction.h"
+#include "Instruction.h"
 
 NOPInsertionDataHazardCorrector::NOPInsertionDataHazardCorrector(
   const std::string hazardPath
@@ -70,7 +70,7 @@ Instruction* NOPInsertionDataHazardCorrector::CreateInstruction(
   const std::string& instruction
 ) const
 {
-  return new BinaryInstruction(instruction);
+  return new Instruction(instruction);
 }
 
 std::string NOPInsertionDataHazardCorrector::NoOperationInstruction() const

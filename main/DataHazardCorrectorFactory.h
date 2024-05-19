@@ -9,6 +9,7 @@ class DataHazardCorrectorFactory
 {
 public:
   static DataHazardCorrector* CreateCorrector(
+    const int typeOfCorrector,
     const std::string hazardPath
   );
 

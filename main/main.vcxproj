@@ -129,20 +129,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="NOPInsertionDataHazardCorrector.cpp" />
-    <ClCompile Include="BinaryInstruction.cpp" />
     <ClCompile Include="DataHazardCorrector.cpp" />
     <ClCompile Include="DataHazardCorrectorFactory.cpp" />
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BinaryOperationType.cpp" />
+    <ClCompile Include="NOPWithForwardingDataHazardCorrector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NOPInsertionDataHazardCorrector.h" />
-    <ClInclude Include="BinaryInstruction.h" />
     <ClInclude Include="DataHazardCorrector.h" />
     <ClInclude Include="DataHazardCorrectorFactory.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="BinaryOperationType.h" />
+    <ClInclude Include="NOPWithForwardingDataHazardCorrector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
