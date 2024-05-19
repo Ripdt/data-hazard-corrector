@@ -13,7 +13,12 @@ public:
 private:
   void ResolveDataHazards() override;
 
-  void InsertFixedInstructions();
+  bool HasConflictWithInstructions(
+    Instruction* previousInstruction,
+    Instruction* followingInstruction
+  ) const;
+
+  void InsertFixedInstruction();
 
   Instruction* CreateInstruction(
     const std::string& instruction

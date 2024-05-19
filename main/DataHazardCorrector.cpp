@@ -54,6 +54,7 @@ void DataHazardCorrector::GetInstructionsFromHazardFile()
       if (!line.empty())
         instructions.push_back(CreateInstruction(line));
     }
+
   rom.close();
 }
 

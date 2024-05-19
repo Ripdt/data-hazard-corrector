@@ -2,7 +2,7 @@
 #define DATAHAZARDCORRECTORH
 
 #include <string>
-#include <vector>
+#include <list>
 
 class Instruction;
 
@@ -24,8 +24,8 @@ protected:
     const std::string hazardPath;
     const std::string correctedPath;
 
-    std::vector<Instruction*> instructions;
-    std::vector<Instruction*> correctedInstructions;
+    std::list<Instruction*> instructions;
+    std::list<Instruction*> correctedInstructions;
 
 private:
     std::string GenerateCorrectedPath(

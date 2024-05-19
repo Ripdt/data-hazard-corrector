@@ -11,32 +11,59 @@ NOPInsertionDataHazardCorrector::NOPInsertionDataHazardCorrector(
 
 void NOPInsertionDataHazardCorrector::ResolveDataHazards()
 {
-  std::vector<std::string> registers;
-  std::string lastDestiny;
-  for (Instruction* instruction : instructions) {
-    const std::string firstRegister = instruction->FirstRegister();
-    const std::string secondRegister = instruction->SecondRegister();
+  Instruction* actualInstruction = nullptr;
+  Instruction* previousInstruction = nullptr;
+  Instruction* prePreviousInstruction = nullptr;
 
-    const bool lastInstructionHadADestiny = lastDestiny != "";
-    const bool firstIsConflicted = lastInstructionHadADestiny && firstRegister == lastDestiny;
-    const bool secondIsConflicted = lastInstructionHadADestiny && secondRegister == lastDestiny;
+  for (std::list<Instruction*>::iterator it = instructions.begin(); it != instructions.end(); it++) {
+    prePreviousInstruction = previousInstruction;
+    previousInstruction = actualInstruction;
+    actualInstruction = *it;
 
-    if (firstIsConflicted || secondIsConflicted) {
-      InsertFixedInstructions();
+    const bool foundConflict2InstructionsBefore = HasConflictWithInstructions(prePreviousInstruction, actualInstruction);
+    const bool foundConflictWithPreviousInstructions = HasConflictWithInstructions(previousInstruction, actualInstruction);
+
+    if (foundConflict2InstructionsBefore) {
+      InsertFixedInstruction();
+      if (foundConflictWithPreviousInstructions) {
+        InsertFixedInstruction();
+        previousInstruction = nullptr;
+      }
     }
-    correctedInstructions.push_back(instruction);
-
-    lastDestiny = instruction->DestinyRegister();
+    else if (foundConflictWithPreviousInstructions) {
+      InsertFixedInstruction();
+      InsertFixedInstruction();
+      previousInstruction = nullptr;
+    }
+    correctedInstructions.push_back(*it);
   }
 }
 
-void NOPInsertionDataHazardCorrector::InsertFixedInstructions()
+bool NOPInsertionDataHazardCorrector::HasConflictWithInstructions(
+  Instruction* previousInstruction,
+  Instruction* followingInstruction
+) const
 {
-  Instruction* nop1 = CreateInstruction(NoOperationInstruction());
-  Instruction* nop2 = CreateInstruction(NoOperationInstruction());
+  if (previousInstruction == nullptr) {
+    return false;
+  }
 
-  correctedInstructions.push_back(nop1);
-  correctedInstructions.push_back(nop2);
+  const std::string destinyRegisterOfPreviousInstruction = previousInstruction->DestinyRegister();
+  const bool hasADestiny = destinyRegisterOfPreviousInstruction != "" && destinyRegisterOfPreviousInstruction != "00000";
+  if (!hasADestiny) {
+    return false;
+  }
+
+  const bool firstIsConflicted = followingInstruction->FirstRegister() == destinyRegisterOfPreviousInstruction;
+  const bool secondIsConflicted = followingInstruction->SecondRegister() == destinyRegisterOfPreviousInstruction;
+
+  return firstIsConflicted || secondIsConflicted;
+}
+
+void NOPInsertionDataHazardCorrector::InsertFixedInstruction()
+{
+  Instruction* nop = CreateInstruction(NoOperationInstruction());
+  correctedInstructions.push_back(nop);
 }
 
 Instruction* NOPInsertionDataHazardCorrector::CreateInstruction(
