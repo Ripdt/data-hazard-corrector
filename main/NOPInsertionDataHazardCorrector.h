@@ -10,9 +10,10 @@ public:
     const std::string hazardPath
   );
 
-private:
+protected:
   void ResolveDataHazards() override;
 
+private:
   void InsertFixedInstruction();
 };
 

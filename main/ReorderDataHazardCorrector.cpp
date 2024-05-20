@@ -1,39 +1,32 @@
-#include "ReorderDataHazardCorrection.h"
+#include "ReorderDataHazardCorrector.h"
 
 #include <algorithm>
 #include "Instruction.h"
 
-ReorderDataHazardCorrection::ReorderDataHazardCorrection(
+ReorderDataHazardCorrector::ReorderDataHazardCorrector(
   const std::string _hazardPath
 ) :
-  DataHazardCorrector(_hazardPath)
+  NOPInsertionDataHazardCorrector(_hazardPath)
 {
 }
 
-void ReorderDataHazardCorrection::ResolveDataHazards()
+void ReorderDataHazardCorrector::ResolveDataHazards()
 {
   typedef std::list<Instruction*>::iterator iter;
+
   Instruction* previousInstruction = nullptr;
   for (iter it = instructions.begin(); it != instructions.end(); it++) {
     if (HasConflictWithInstructions(previousInstruction, *it)) {
       bool swapped = false;
       for (iter jt = it; jt != instructions.end(); jt++) {
         if (!HasConflictWithInstructions(previousInstruction, *jt) && !HasConflictWithInstructions(*jt, *it)) {
-          correctedInstructions.push_back(*jt);
-          std::iter_swap(it, jt); // Swap the position of jt and it in list instructions
-          swapped = true;
+          std::iter_swap(it, jt);
           break;
         }
       }
-      if (!swapped) {
-        auto nop = new Instruction(NoOperationInstruction());
-        correctedInstructions.push_back(nop);
-        correctedInstructions.push_back(*it);
-      }
-    }
-    else {
-      correctedInstructions.push_back(*it);
     }
     previousInstruction = *it;
   }
+
+  NOPInsertionDataHazardCorrector::ResolveDataHazards();
 }
