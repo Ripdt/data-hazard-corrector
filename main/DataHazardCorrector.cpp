@@ -52,10 +52,31 @@ void DataHazardCorrector::GetInstructionsFromHazardFile()
       std::string line;
       std::getline(rom, line);
       if (!line.empty())
-        instructions.push_back(CreateInstruction(line));
+        instructions.push_back(new Instruction(line));
     }
 
   rom.close();
+}
+
+bool DataHazardCorrector::HasConflictWithInstructions(
+  Instruction* previousInstruction,
+  Instruction* followingInstruction
+) const
+{
+  if (previousInstruction == nullptr) {
+    return false;
+  }
+
+  const std::string destinyRegisterOfPreviousInstruction = previousInstruction->DestinyRegister();
+  const bool hasADestiny = destinyRegisterOfPreviousInstruction != "" && destinyRegisterOfPreviousInstruction != "00000";
+  if (!hasADestiny) {
+    return false;
+  }
+
+  const bool firstIsConflicted = followingInstruction->FirstRegister() == destinyRegisterOfPreviousInstruction;
+  const bool secondIsConflicted = followingInstruction->SecondRegister() == destinyRegisterOfPreviousInstruction;
+
+  return firstIsConflicted || secondIsConflicted;
 }
 
 void DataHazardCorrector::WriteCorrectedFile() const
@@ -83,4 +104,9 @@ double DataHazardCorrector::CalculateExecutionTime(
 std::string DataHazardCorrector::CorrectedPath() const
 {
   return correctedPath;
+}
+
+std::string DataHazardCorrector::NoOperationInstruction() const
+{
+  return "00000000000000000000000000010011"; // addi x0, x0, 0
 }

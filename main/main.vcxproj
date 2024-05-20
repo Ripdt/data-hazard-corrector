@@ -135,6 +135,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BinaryOperationType.cpp" />
     <ClCompile Include="NOPWithForwardingDataHazardCorrector.cpp" />
+    <ClCompile Include="ReorderDataHazardCorrection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NOPInsertionDataHazardCorrector.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="BinaryOperationType.h" />
     <ClInclude Include="NOPWithForwardingDataHazardCorrector.h" />
+    <ClInclude Include="ReorderDataHazardCorrection.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

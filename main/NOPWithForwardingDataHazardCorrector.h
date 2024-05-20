@@ -1,4 +1,6 @@
-#pragma once
+#ifndef NOPWITHFORWARDINGDATAHAZARDCORRECTORH
+#define NOPWITHFORWARDINGDATAHAZARDCORRECTORH
+
 #include "NOPInsertionDataHazardCorrector.h"
 
 class NOPWithForwardingDataHazardCorrector : public NOPInsertionDataHazardCorrector
@@ -15,3 +17,4 @@ private:
   ) const override;
 };
 
+#endif

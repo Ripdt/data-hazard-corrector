@@ -21,6 +21,13 @@ public:
     size_t CorrectedInstructionCount() const { return correctedInstructions.size(); }
 
 protected:
+    std::string NoOperationInstruction() const;
+
+    virtual bool HasConflictWithInstructions(
+      Instruction* previousInstruction,
+      Instruction* followingInstruction
+    ) const;
+
     const std::string hazardPath;
     const std::string correctedPath;
 
@@ -36,13 +43,7 @@ private:
 
     void GetInstructionsFromHazardFile();
 
-    virtual Instruction* CreateInstruction(
-        const std::string& instruction
-    ) const = 0;
-
     virtual void ResolveDataHazards() = 0;
-
-    virtual std::string NoOperationInstruction() const = 0;
 
     void WriteCorrectedFile() const;
 };

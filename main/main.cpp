@@ -67,11 +67,11 @@ std::string getResourcePath()
 
 int getTypeOfCorrector()
 {
-  std::cout << "Insert which option of Data Hazard Corrector you want:\n";
-  std::cout << "1 - No Hardware Solutions for Conflicts (NOPs Only)\n";
-  std::cout << "2 - Forwarding Implemented (Use NOPs as Needed)\n";
-  std::cout << "3 - No Hardware Solutions for Conflicts (Reorder and NOPs)\n";
-  std::cout << "4 - Forwarding Implemented (Reorder and NOPs)\n";
+  std::cout << "\nInsert which option of Data Hazard Corrector you want:\n\n";
+  std::cout << "\t1 - No Hardware Solutions for Conflicts (NOPs Only)\n";
+  std::cout << "\t2 - Forwarding Implemented (Use NOPs as Needed)\n";
+  std::cout << "\t3 - No Hardware Solutions for Conflicts (Reorder and NOPs)\n";
+  std::cout << "\t4 - Forwarding Implemented (Reorder and NOPs)\n";
 
   int typeOfCorrector;
   std::cin >> typeOfCorrector;
