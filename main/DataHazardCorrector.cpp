@@ -52,39 +52,40 @@ void DataHazardCorrector::GetInstructionsFromHazardFile()
       std::string line;
       std::getline(rom, line);
       if (!line.empty())
-        instructions.push_back(CreateInstruction(line));
+        instructions.push_back(new Instruction(line));
     }
+
   rom.close();
 }
 
-void DataHazardCorrector::ResolveDataHazards()
+bool DataHazardCorrector::HasConflictWithInstructions(
+  Instruction* previousInstruction,
+  Instruction* followingInstruction
+) const
 {
-  std::vector<std::string> registers;
-  std::string lastDestiny;
-  for (Instruction* instruction : instructions) {
-    const std::string firstRegister = instruction->FirstRegister();
-    const std::string secondRegister = instruction->SecondRegister();
-
-    const bool lastInstructionHadADestiny = lastDestiny != "";
-    const bool firstIsConflicted = lastInstructionHadADestiny && firstRegister == lastDestiny;
-    const bool secondIsConflicted = lastInstructionHadADestiny && secondRegister == lastDestiny;
-
-    if (firstIsConflicted || secondIsConflicted) {
-      InsertFixedInstructions();
-    }
-    correctedInstructions.push_back(instruction);
-
-    lastDestiny = instruction->DestinyRegister();
+  if (previousInstruction == nullptr) {
+    return false;
   }
+
+  const std::string destinyRegisterOfPreviousInstruction = previousInstruction->DestinyRegister();
+  const bool hasADestiny = destinyRegisterOfPreviousInstruction != "" && destinyRegisterOfPreviousInstruction != "00000";
+  if (!hasADestiny) {
+    return false;
+  }
+
+  const bool firstIsConflicted = followingInstruction->FirstRegister() == destinyRegisterOfPreviousInstruction;
+  const bool secondIsConflicted = followingInstruction->SecondRegister() == destinyRegisterOfPreviousInstruction;
+
+  return firstIsConflicted || secondIsConflicted;
 }
 
-void DataHazardCorrector::InsertFixedInstructions()
+void DataHazardCorrector::WriteCorrectedFile() const
 {
-  Instruction* nop1 = CreateInstruction(NoOperationInstruction());
-  Instruction* nop2 = CreateInstruction(NoOperationInstruction());
-
-  correctedInstructions.push_back(nop1);
-  correctedInstructions.push_back(nop2);
+  std::ofstream correctedFile(correctedPath);
+  if (correctedFile.is_open())
+    for (const Instruction* instruction : correctedInstructions)
+      correctedFile << instruction->ToString() << std::endl;
+  correctedFile.close();
 }
 
 double DataHazardCorrector::CalculatePerformanceOverhead() const 
@@ -100,16 +101,12 @@ double DataHazardCorrector::CalculateExecutionTime(
   return correctedInstructions.size() * clockTime;
 }
 
-void DataHazardCorrector::WriteCorrectedFile() const
-{
-  std::ofstream correctedFile(correctedPath);
-  if (correctedFile.is_open())
-    for (const Instruction* instruction : correctedInstructions)
-        correctedFile << instruction->ToString() << std::endl;
-  correctedFile.close();
-}
-
 std::string DataHazardCorrector::CorrectedPath() const
 {
   return correctedPath;
+}
+
+std::string DataHazardCorrector::NoOperationInstruction() const
+{
+  return "00000000000000000000000000010011"; // addi x0, x0, 0
 }

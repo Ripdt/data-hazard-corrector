@@ -9,21 +9,11 @@ class DataHazardCorrectorFactory
 {
 public:
   static DataHazardCorrector* CreateCorrector(
+    const int typeOfCorrector,
     const std::string hazardPath
   );
 
 private:
-  static bool IsBinary(
-    const std::string& hazardPath
-  );
-
-  static bool IsHexadecimal(
-    const std::string& hazardPath
-  );
-
-  static bool IsAssembly(
-    const std::string& hazardPath
-  );
 
   DataHazardCorrectorFactory() = default;
 };

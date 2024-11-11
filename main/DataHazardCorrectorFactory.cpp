@@ -1,47 +1,19 @@
 #include "DataHazardCorrectorFactory.h"
 
 #include "DataHazardCorrector.h"
-
-#include "AssemblyDataHazardCorrector.h"
-#include "BinaryDataHazardCorrector.h"
-#include "HexadecimalDataHazardCorrector.h"
+#include "NOPInsertionDataHazardCorrector.h"
+#include "WithForwardingDataHazardCorrectors.h"
+#include "ReorderDataHazardCorrector.h"
 
 DataHazardCorrector* DataHazardCorrectorFactory::CreateCorrector(
+  const int typeOfCorrector,
   const std::string hazardPath
 )
 {
-  if (IsBinary(hazardPath))
-    return new BinaryDataHazardCorrector(hazardPath);
+  if (typeOfCorrector == 1) return new NOPInsertionDataHazardCorrector(hazardPath);
+  if (typeOfCorrector == 2) return new NOPWithForwardingDataHazardCorrector(hazardPath);
+  if (typeOfCorrector == 3) return new ReorderDataHazardCorrector(hazardPath);
+  if (typeOfCorrector == 4) return new ReorderWithForwardingDataHazardCorrector(hazardPath);
 
-  //if (IsHexadecimal(hazardPath))
-  //  return new HexadecimalDataHazardCorrector(hazardPath);
-
-  //if (IsAssembly(hazardPath))
-  //  return new AssemblyDataHazardCorrector(hazardPath);
-
-  return nullptr;
-}
-
-//TODO: check binary file
-bool DataHazardCorrectorFactory::IsBinary(
-  const std::string& hazardPath
-)
-{
-  return true;
-}
-
-//TODO: check hex file
-bool DataHazardCorrectorFactory::IsHexadecimal(
-  const std::string& hazardPath
-)
-{
-  return false;
-}
-
-//TODO: check assembly file
-bool DataHazardCorrectorFactory::IsAssembly(
-  const std::string& hazardPath
-)
-{
-  return false;
+  throw std::exception("not valid type");
 }

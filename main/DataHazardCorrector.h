@@ -2,7 +2,7 @@
 #define DATAHAZARDCORRECTORH
 
 #include <string>
-#include <vector>
+#include <list>
 
 class Instruction;
 
@@ -21,11 +21,18 @@ public:
     size_t CorrectedInstructionCount() const { return correctedInstructions.size(); }
 
 protected:
+    std::string NoOperationInstruction() const;
+
+    virtual bool HasConflictWithInstructions(
+      Instruction* previousInstruction,
+      Instruction* followingInstruction
+    ) const;
+
     const std::string hazardPath;
     const std::string correctedPath;
 
-    std::vector<Instruction*> instructions;
-    std::vector<Instruction*> correctedInstructions;
+    std::list<Instruction*> instructions;
+    std::list<Instruction*> correctedInstructions;
 
 private:
     std::string GenerateCorrectedPath(
@@ -36,13 +43,7 @@ private:
 
     void GetInstructionsFromHazardFile();
 
-    virtual Instruction* CreateInstruction(
-        const std::string& instruction
-    ) const = 0;
-
-    void ResolveDataHazards();
-
-    virtual std::string NoOperationInstruction() const = 0;
+    virtual void ResolveDataHazards() = 0;
 
     void WriteCorrectedFile() const;
 };
