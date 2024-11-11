@@ -1,5 +1,4 @@
-#include <iostream>
-#include <conio.h>
+#include <iostream> 
 
 #include "DataHazardCorrector.h"
 #include "DataHazardCorrectorFactory.h"
@@ -99,7 +98,9 @@ void runCorrector()
   printPerformanceMetrics(corrector, clockTime);
 
   delete corrector;
-  _getch();
+
+  char dummy;
+  std::cin >> dummy;
 }
 
 void printHelp()
@@ -111,7 +112,8 @@ void printHelp()
   std::cout << "\t1. Select the option \"1\" in the Main Menu;\n";
   std::cout << "\t2. Inform the name of the ROM (Ex.: dump.rom);\n";
   std::cout << "\t3. Get the corrected file in the directory specified after the proccess;\n";
-  _getch();
+  char dummy;
+  std::cin >> dummy;
 }
 
 int main()
@@ -119,7 +121,7 @@ int main()
   char keyPressed = '0';
   while (keyPressed != '3') {
     printMainMenu();
-    keyPressed = _getch();
+    std::cin >> keyPressed;
     system("cls");
     if (keyPressed == '1') {
       runCorrector();
