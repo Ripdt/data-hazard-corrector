@@ -15,5 +15,5 @@ DataHazardCorrector* DataHazardCorrectorFactory::CreateCorrector(
   if (typeOfCorrector == 3) return new ReorderDataHazardCorrector(hazardPath);
   if (typeOfCorrector == 4) return new ReorderWithForwardingDataHazardCorrector(hazardPath);
 
-  throw std::exception("not valid type");
+  throw std::exception();
 }

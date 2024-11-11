@@ -1,4 +1,5 @@
-#include <iostream> 
+#include <iostream>
+#include <limits>
 
 #include "DataHazardCorrector.h"
 #include "DataHazardCorrectorFactory.h"
